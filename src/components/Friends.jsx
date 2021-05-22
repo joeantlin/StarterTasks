@@ -1,13 +1,13 @@
 import React from "react";
 
 import AddFriend from "./AddFriend";
-import Friend from "./FriendTemplate";
+import FriendTemplate from "./FriendTemplate";
 
 import friendsService from "../services/FriendsService";
 
 class Friends extends React.Component {
 	state = {
-		friendsList: [],
+		friends: [],
 		testFriend: {
 			id: 24627,
 			bio: "Kate has 50 cats, and wants more",
@@ -30,6 +30,10 @@ class Friends extends React.Component {
 		},
 	};
 
+	componentDidMount = () => {
+		this.getFriends();
+	};
+
 	getFriends = () => {
 		friendsService
 			.getAll()
@@ -38,8 +42,11 @@ class Friends extends React.Component {
 	};
 
 	getFriendsSuccess = (res) => {
-		console.log(res.data.item);
-		this.setState({ friendsList: res.data.item });
+		console.log(res.data.item.pagedItems);
+		this.setState(() => {
+			let friends = res.data.item.pagedItems;
+			return { friends: friends.map(this.mapFriends) };
+		});
 		// renderAllFriends(res.data.item.pagedItems);
 	};
 
@@ -52,6 +59,30 @@ class Friends extends React.Component {
 		}
 	};
 
+	mapFriends = (friend) => {
+		return (
+			<FriendTemplate
+				key={`friend-${friend.id}`}
+				friend={friend}
+				deleteBtn={this.deleteFriend}
+			/>
+		);
+	};
+
+	deleteFriend = (e) => {
+		console.log("test");
+		console.log(e);
+		// let id = $(e.target).closest('.card').attr("id");
+		// friendsService
+		// 	.delete(id)
+		// 	.then((res) => {
+		// 		console.log(res.data);
+		// 	})
+		// 	.catch(this.deleteFriendFail);
+	};
+
+	deleteFriendFail = (res) => console.warn(res);
+
 	render() {
 		return (
 			<React.Fragment>
@@ -60,7 +91,7 @@ class Friends extends React.Component {
 				</div>
 				<AddFriend />
 				<div className="data-container" id="data-container">
-					<Friend friend={this.state.testFriend} />
+					{this.state.friends}
 				</div>
 			</React.Fragment>
 		);

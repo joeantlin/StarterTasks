@@ -1,12 +1,10 @@
 import React from "react";
 
 class FriendTemplate extends React.Component {
-	// constructor(props) {
-	//     super(props);
-	//     this.state = {
-	//         friend: props.friend
-	//     }
-	// }
+	deleteFriend = () => {
+		this.props.deleteBtn(this.props.friend);
+	};
+
 	render() {
 		return (
 			<div className="card">
@@ -18,7 +16,11 @@ class FriendTemplate extends React.Component {
 				<div className="card-body">
 					<h5 className="title">{this.props.friend.title}</h5>
 					<p className="summary">{this.props.friend.summary}</p>
-					<button type="button" className="btn btn-danger delete-friend">
+					<button
+						type="button"
+						className="btn btn-danger delete-friend"
+						onClick={this.deleteFriend}
+					>
 						Delete
 					</button>
 					<button type="button" className="btn btn-secondary update-friend">
@@ -30,4 +32,4 @@ class FriendTemplate extends React.Component {
 	}
 }
 
-export default FriendTemplate;
+export default React.memo(FriendTemplate);
