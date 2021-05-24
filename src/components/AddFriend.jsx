@@ -42,11 +42,14 @@ class AddFriend extends React.Component {
 	addFriend = (friend) => {
 		friendsService
 			.add(friend)
-			.then(this.addFriendSuccess)
+			.then((res) => {
+				console.log(res.data);
+				friend.id = res.data.item;
+				this.props.onAdd(friend);
+			})
 			.catch(this.addFriendFail);
 	};
 
-	addFriendSuccess = (res) => console.log(res.data);
 	addFriendFail = (res) => console.warn(res);
 
 	render() {
