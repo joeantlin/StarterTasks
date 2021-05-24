@@ -57,6 +57,16 @@ class Friends extends React.Component {
 		);
 	};
 
+	addFriendState = (newFriend) => {
+		let newState = this.state.friends;
+		newFriend.primaryImage = {
+			imageUrl: newFriend.primaryImage,
+		};
+		newState.unshift(newFriend);
+		this.setState({ friends: newState });
+		this.setFriendTemplates(newState);
+	};
+
 	deleteFriend = (friend) => {
 		friendsService
 			.remove(friend.id)
@@ -111,7 +121,7 @@ class Friends extends React.Component {
 						</div>
 					</Route>
 					<Route exact path="/friends/add">
-						<AddFriend />
+						<AddFriend onAdd={this.addFriendState} />
 					</Route>
 					<Route
 						exact
