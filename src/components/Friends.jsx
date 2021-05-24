@@ -1,33 +1,15 @@
 import React from "react";
 
 import AddFriend from "./AddFriend";
+import EditFriend from "./EditFriend";
 import FriendTemplate from "./FriendTemplate";
-
+import { Route, Switch, NavLink, withRouter } from "react-router-dom";
 import friendsService from "../services/FriendsService";
 
 class Friends extends React.Component {
 	state = {
 		friends: [],
-		testFriend: {
-			id: 24627,
-			bio: "Kate has 50 cats, and wants more",
-			title: "Ms. Kate",
-			summary: "Kate has a lot of cats",
-			headline: "Kate has Cat Lady",
-			entityTypeId: 1,
-			statusId: "Active",
-			slug: "friend916",
-			skills: null,
-			primaryImage: {
-				id: 11965,
-				entityId: 24627,
-				imageTypeId: "Main",
-				imageUrl:
-					"https://i.guim.co.uk/img/media/6ba3098f53605d34e13125a4b52274d4b8cae093/0_0_3000_1955/master/3000.jpg?width=700&quality=85&auto=format&fit=max&s=c5d42b3a07e7e857e009eb6f35f75394",
-			},
-			dateCreated: "2021-05-17T16:30:26.11",
-			dateModified: "2021-05-17T20:38:57.6866667",
-		},
+		friendtemplates: [],
 	};
 
 	componentDidMount = () => {
@@ -43,10 +25,10 @@ class Friends extends React.Component {
 
 	getFriendsSuccess = (res) => {
 		console.log(res.data.item.pagedItems);
-		this.setState(() => {
-			let friends = res.data.item.pagedItems;
-			return { friends: friends.map(this.mapFriends) };
+		this.setState({
+			friends: res.data.item.pagedItems,
 		});
+		this.setFriendTemplates(res.data.item.pagedItems);
 		// renderAllFriends(res.data.item.pagedItems);
 	};
 
@@ -59,7 +41,13 @@ class Friends extends React.Component {
 		}
 	};
 
-	mapFriends = (friend) => {
+	setFriendTemplates(friends) {
+		this.setState(() => {
+			return { friendTemplates: friends.map(this.mapFriendTemplates) };
+		});
+	}
+
+	mapFriendTemplates = (friend) => {
 		return (
 			<FriendTemplate
 				key={`friend-${friend.id}`}
@@ -69,19 +57,44 @@ class Friends extends React.Component {
 		);
 	};
 
-	deleteFriend = (e) => {
-		console.log("test");
-		console.log(e);
-		// let id = $(e.target).closest('.card').attr("id");
-		// friendsService
-		// 	.delete(id)
-		// 	.then((res) => {
-		// 		console.log(res.data);
-		// 	})
-		// 	.catch(this.deleteFriendFail);
+	deleteFriend = (friend) => {
+		friendsService
+			.remove(friend.id)
+			.then((res) => {
+				console.log(res.data);
+				this.removeFriend(friend);
+			})
+			.catch(this.deleteFriendFail);
 	};
 
 	deleteFriendFail = (res) => console.warn(res);
+
+	removeFriend = (deletedFriend) => {
+		let newState = this.state.friends;
+		newState.forEach((friend, i) => {
+			if (friend.id === deletedFriend.id) {
+				newState.splice(i, 1);
+			}
+		});
+
+		this.setState({ friends: newState });
+		this.setFriendTemplates(newState);
+	};
+
+	updateFriendState = (updatedFriend) => {
+		let newState = this.state.friends;
+		newState.forEach((friend, i) => {
+			if (friend.id === updatedFriend.id) {
+				newState[i] = updatedFriend;
+				newState[i].primaryImage = {
+					imageUrl: updatedFriend.primaryImage,
+				};
+			}
+		});
+
+		this.setState({ friends: newState });
+		this.setFriendTemplates(newState);
+	};
 
 	render() {
 		return (
@@ -89,13 +102,31 @@ class Friends extends React.Component {
 				<div className="title-container">
 					<h2>Friends Page</h2>
 				</div>
-				<AddFriend />
+				<Switch>
+					<Route exact path="/friends">
+						<div className="data-container">
+							<NavLink to="/friends/add" className="btn btn-primary">
+								Add Friends
+							</NavLink>
+						</div>
+					</Route>
+					<Route exact path="/friends/add">
+						<AddFriend />
+					</Route>
+					<Route
+						exact
+						path="/friends/edit/:friendId"
+						render={(props) => (
+							<EditFriend {...props} onUpdate={this.updateFriendState} />
+						)}
+					/>
+				</Switch>
 				<div className="data-container" id="data-container">
-					{this.state.friends}
+					{this.state.friendTemplates}
 				</div>
 			</React.Fragment>
 		);
 	}
 }
 
-export default Friends;
+export default withRouter(Friends);

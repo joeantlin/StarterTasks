@@ -44,7 +44,8 @@ class Register extends React.Component {
 	addUserSuccess = (res) => {
 		console.log(res.data);
 		// toastNotify('success', `${newUser.firstName} ${newUser.lastName} has registered an account!`);
-		window.location.href = "/";
+		this.props.loggedIn();
+		this.props.history.push("/");
 	};
 
 	addUserFail = (res) => {

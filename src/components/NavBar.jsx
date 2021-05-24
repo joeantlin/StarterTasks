@@ -1,40 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import usersService from "../services/UsersService";
+// import usersService from "../services/UsersService";
 
 class NavBar extends React.Component {
-	constructor(props) {
-		super(props);
-		if (props.currentUser) {
-			this.state = {
-				leftButtons: (
-					<button
-						type="button"
-						className="btn btn-primary"
-						id="logout-button"
-						onClick={this.logoutUser}
-					>
-						Logout
-					</button>
-				),
-			};
-		} else {
-			this.state = {
-				leftButtons: (
-					<React.Fragment>
-						<NavLink to="/login" className="btn btn-primary">
-							Login
-						</NavLink>
-						<NavLink to="/register" className="btn btn-primary">
-							Register
-						</NavLink>
-					</React.Fragment>
-				),
-			};
-		}
-	}
-
 	loggedIn() {
 		this.setState({
 			leftButtons: (
@@ -50,32 +19,17 @@ class NavBar extends React.Component {
 		});
 	}
 
-	loggedOut() {
-		this.setState({
-			leftButtons: (
-				<React.Fragment>
-					<NavLink to="/login" className="btn btn-primary">
-						Login
-					</NavLink>
-					<NavLink to="/register" className="btn btn-primary">
-						Register
-					</NavLink>
-				</React.Fragment>
-			),
-		});
-	}
+	// logoutUser = () => {
+	// 	usersService.logout().then(this.logoutUserSuccess).catch(this.logoutUserFail);
+	// };
 
-	logoutUser = () => {
-		usersService.logout().then(this.logoutUserSuccess).catch(this.logoutUserFail);
-	};
+	// logoutUserSuccess = (res) => {
+	// 	console.log({ loggedOut: res.data });
+	// 	// this.loggedOut();
+	// 	this.props.history.push("/login"); // Come back and fix
+	// };
 
-	logoutUserSuccess = (res) => {
-		console.log({ loggedOut: res.data });
-		this.loggedOut();
-		window.location.href = "/login"; // Come back and fix
-	};
-
-	logoutUserFail = (res) => console.warn({ error: res });
+	// logoutUserFail = (res) => console.warn({ error: res });
 
 	render() {
 		return (
@@ -126,7 +80,7 @@ class NavBar extends React.Component {
 					</div>
 				</div>
 				<div className="container-fluid justify-content-end" id="nav-btns-right">
-					{this.state.leftButtons}
+					{this.props.leftButtons}
 				</div>
 			</nav>
 		);

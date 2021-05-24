@@ -2,6 +2,8 @@ import React from "react";
 
 import friendsService from "../services/FriendsService";
 
+import { NavLink } from "react-router-dom";
+
 class AddFriend extends React.Component {
 	state = {
 		formData: {
@@ -114,6 +116,9 @@ class AddFriend extends React.Component {
 						/>
 					</div>
 					<div className="col-md-6">
+						<NavLink to="/friends" className="btn btn-danger">
+							Cancel
+						</NavLink>
 						<button
 							type="submit"
 							className="btn btn-primary"

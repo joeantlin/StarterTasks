@@ -1,5 +1,7 @@
 import React from "react";
 
+import { NavLink } from "react-router-dom";
+
 class FriendTemplate extends React.Component {
 	deleteFriend = () => {
 		this.props.deleteBtn(this.props.friend);
@@ -23,9 +25,15 @@ class FriendTemplate extends React.Component {
 					>
 						Delete
 					</button>
-					<button type="button" className="btn btn-secondary update-friend">
+					<NavLink
+						to={"/friends/edit/" + this.props.friend.id}
+						className="btn btn-primary"
+					>
 						Edit
-					</button>
+					</NavLink>
+					{/* <button type="button" className="btn btn-secondary update-friend">
+						Edit
+					</button> */}
 				</div>
 			</div>
 		);

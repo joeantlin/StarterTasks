@@ -4,11 +4,6 @@ import { NavLink } from "react-router-dom";
 import usersService from "../services/UsersService";
 
 class Login extends React.Component {
-	// constructor(props) {
-	//     super(props);
-	//     this.state = {
-	//     }
-	// }
 	state = {
 		formData: {
 			email: "",
@@ -43,7 +38,8 @@ class Login extends React.Component {
 
 	loginUserSuccess = (res) => {
 		console.log(res.data);
-		window.location.href = "/"; // Come back and fix
+		this.props.loggedIn();
+		this.props.history.push("/");
 	};
 
 	loginUserFail = (res) => {

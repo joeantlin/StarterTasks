@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter, NavLink } from "react-router-dom";
 import "./App.css";
 
 import NavBar from "./components/NavBar";
@@ -22,6 +22,16 @@ class App extends Component {
 		this.setState({
 			currentUser: res.data.item,
 			welcomeMsg: `Welcome ${res.data.item.name}`,
+			leftButtons: (
+				<button
+					type="button"
+					className="btn btn-primary"
+					id="logout-button"
+					onClick={this.logoutUser}
+				>
+					Logout
+				</button>
+			),
 		});
 		console.log(this.state);
 	};
@@ -30,8 +40,42 @@ class App extends Component {
 		console.warn({ error: res });
 		this.setState({
 			welcomeMsg: `Please register or login`,
+			leftButtons: (
+				<React.Fragment>
+					<NavLink to="/login" className="btn btn-primary">
+						Login
+					</NavLink>
+					<NavLink to="/register" className="btn btn-primary">
+						Register
+					</NavLink>
+				</React.Fragment>
+			),
 		});
 	};
+
+	logoutUser = () => {
+		usersService.logout().then(this.logoutUserSuccess).catch(this.logoutUserFail);
+	};
+
+	logoutUserSuccess = (res) => {
+		console.log({ loggedOut: res.data });
+		this.setState({
+			welcomeMsg: `Please register or login`,
+			leftButtons: (
+				<React.Fragment>
+					<NavLink to="/login" className="btn btn-primary">
+						Login
+					</NavLink>
+					<NavLink to="/register" className="btn btn-primary">
+						Register
+					</NavLink>
+				</React.Fragment>
+			),
+		});
+		this.props.history.push("/login");
+	};
+
+	logoutUserFail = (res) => console.warn({ error: res });
 
 	componentDidMount() {
 		this.getUser();
@@ -39,33 +83,34 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router>
-				<React.Fragment>
-					<NavBar user={this.state.currentUser} />
-					<main role="main">
-						<Switch>
-							<Route exact path="/">
-								<Home message={this.state.welcomeMsg} />
-							</Route>
-							<Route path="/login" strict={true}>
-								<Login />
-							</Route>
-							<Route path="/register" strict={true}>
-								<Register />
-							</Route>
-							<Route path="/friends" strict={true}>
-								<Friends />
-							</Route>
-						</Switch>
-					</main>
+			<React.Fragment>
+				<NavBar
+					user={this.state.currentUser}
+					leftButtons={this.state.leftButtons}
+				/>
+				<main role="main">
+					<Switch>
+						<Route exact path="/">
+							<Home message={this.state.welcomeMsg} history={this.props.history} />
+						</Route>
+						<Route path="/login" strict={true}>
+							<Login history={this.props.history} loggedIn={this.getUser} />
+						</Route>
+						<Route path="/register" strict={true}>
+							<Register history={this.props.history} loggedIn={this.getUser} />
+						</Route>
+						<Route path="/friends" strict={true}>
+							<Friends />
+						</Route>
+					</Switch>
+				</main>
 
-					<footer className="container">
-						<p>&copy; Sabio 2019-2020</p>
-					</footer>
-				</React.Fragment>
-			</Router>
+				<footer className="container">
+					<p>&copy; Sabio 2019-2020</p>
+				</footer>
+			</React.Fragment>
 		);
 	}
 }
 
-export default App;
+export default withRouter(App);
