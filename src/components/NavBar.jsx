@@ -76,6 +76,11 @@ class NavBar extends React.Component {
 									Events
 								</NavLink>
 							</li>
+							<li className="nav-item">
+								<NavLink className="nav-link" to="/widgets">
+									Widgets
+								</NavLink>
+							</li>
 						</ul>
 					</div>
 				</div>

@@ -7,6 +7,7 @@ import Home from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Friends from "./components/Friends";
+import Widgets from "./components/Widgets";
 
 import usersService from "./services/UsersService";
 
@@ -101,6 +102,9 @@ class App extends Component {
 						</Route>
 						<Route path="/friends" strict={true}>
 							<Friends />
+						</Route>
+						<Route exact path="/widgets">
+							<Widgets />
 						</Route>
 					</Switch>
 				</main>
