@@ -1,8 +1,9 @@
 import React from "react";
 
-import friendsService from "../services/FriendsService";
-
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import friendsService from "../services/FriendsService";
 
 class EditFriend extends React.Component {
 	state = { formData: {} };
@@ -63,9 +64,9 @@ class EditFriend extends React.Component {
 	getFriendFail = (res) => {
 		console.warn({ error: res });
 		if (res.response.status === 404) {
-			// toastNotify('error', "No Friend Found!");
+			toast.error("No Friend Found!");
 		} else {
-			// toastNotify('error', "Could not get Friend!");
+			toast.error("Could not get Friend!");
 		}
 	};
 
@@ -74,14 +75,14 @@ class EditFriend extends React.Component {
 			.update(friend, friend.id)
 			.then((res) => {
 				console.log({ hasUpdated: res.data });
-				// toastNotify('success', `${friend.title}has been updated!`);
+				toast.success(`${friend.title}has been updated!`);
 				this.props.onUpdate(friend);
 			})
 			.catch(this.updateFriendFail);
 	};
 
 	updateFriendFail = (res) => {
-		// toastNotify('error', "Could not update Friend!");
+		toast.error("Could not update Friend!");
 		console.warn({ error: res });
 	};
 

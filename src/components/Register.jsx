@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import usersService from "../services/UsersService";
 
@@ -38,12 +39,19 @@ class Register extends React.Component {
 	};
 
 	addUser = (newUser) => {
-		usersService.add(newUser).then(this.addUserSuccess).catch(this.addUserFail);
+		usersService
+			.add(newUser)
+			.then((res) => {
+				this.addUserSuccess(res, newUser);
+			})
+			.catch(this.addUserFail);
 	};
 
-	addUserSuccess = (res) => {
+	addUserSuccess = (res, newUser) => {
 		console.log(res.data);
-		// toastNotify('success', `${newUser.firstName} ${newUser.lastName} has registered an account!`);
+		toast.success(
+			`${newUser.firstName} ${newUser.lastName} has registered an account!`
+		);
 		this.props.loggedIn();
 		this.props.history.push("/");
 	};
@@ -51,10 +59,9 @@ class Register extends React.Component {
 	addUserFail = (res) => {
 		console.warn({ userError: res });
 		if (res.response.status === 400) {
-			// toastNotify('error', "You have input invalid information!");
+			toast.error("You have input invalid information!");
 		} else {
-			// console.warn({ error: res });
-			// toastNotify('error', "New account could not be registered!");
+			toast.error("New account could not be registered!");
 		}
 	};
 

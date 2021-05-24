@@ -2,6 +2,8 @@ import React from "react";
 
 import friendsService from "../services/FriendsService";
 
+import { toast } from "react-toastify";
+
 import { NavLink } from "react-router-dom";
 
 class AddFriend extends React.Component {
@@ -50,7 +52,10 @@ class AddFriend extends React.Component {
 			.catch(this.addFriendFail);
 	};
 
-	addFriendFail = (res) => console.warn(res);
+	addFriendFail = (res) => {
+		console.warn(res);
+		toast.error("Failed to add Friend!");
+	};
 
 	render() {
 		return (

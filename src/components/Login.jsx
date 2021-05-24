@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import usersService from "../services/UsersService";
 
@@ -44,7 +45,7 @@ class Login extends React.Component {
 
 	loginUserFail = (res) => {
 		console.warn({ userError: res });
-		// toastNotify('error', "Could not validate Email or Password!");
+		toast.error("Could not validate Email or Password!");
 	};
 
 	render() {

@@ -13,7 +13,16 @@ import * as serviceWorker from "./serviceWorker";
 ReactDOM.render(
   <Router>
     <App></App>
-    <ToastContainer />
+    <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable={false}
+      pauseOnHover={false} />
   </Router>,
   document.getElementById("root")
 );

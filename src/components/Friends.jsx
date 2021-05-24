@@ -4,6 +4,8 @@ import AddFriend from "./AddFriend";
 import EditFriend from "./EditFriend";
 import FriendTemplate from "./FriendTemplate";
 import { Route, Switch, NavLink, withRouter } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import friendsService from "../services/FriendsService";
 
 class Friends extends React.Component {
@@ -35,9 +37,9 @@ class Friends extends React.Component {
 	getFriendsFail = (res) => {
 		console.warn({ error: res });
 		if (res.response.status === 404) {
-			// toastNotify("error", "No Users Found!");
+			toast.error("No Friends Found!");
 		} else {
-			// toastNotify("error", "Could not get Users!");
+			toast.error("Could not get Friends!");
 		}
 	};
 
