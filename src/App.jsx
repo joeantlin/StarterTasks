@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Friends from "./components/Friends";
 import Widgets from "./components/Widgets";
+import Jobs from "./components/Jobs";
 
 import usersService from "./services/UsersService";
 
@@ -105,6 +106,9 @@ class App extends Component {
 						</Route>
 						<Route exact path="/widgets">
 							<Widgets />
+						</Route>
+						<Route exact path="/jobs">
+							<Jobs />
 						</Route>
 					</Switch>
 				</main>

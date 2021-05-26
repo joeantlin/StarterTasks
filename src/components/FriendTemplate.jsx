@@ -8,18 +8,35 @@ class FriendTemplate extends React.Component {
 	};
 
 	render() {
+		// let image;
+		// if (this.props.friend.primaryImage) {
+		// 	image = (
+		// 		<img
+		// 			src={this.props.friend.primaryImage.imageUrl}
+		// 			className="card-img-top profile"
+		// 			alt="profile"
+		// 		/>
+		// 	);
+		// }
 		return (
 			<div className="card">
-				<img
-					src={this.props.friend.primaryImage.imageUrl}
-					className="card-img-top profile"
-					alt="profile"
-				/>
+				{this.props.friend.primaryImage ? (
+					<img
+						src={this.props.friend.primaryImage.imageUrl}
+						className="card-img-top profile"
+						alt="profile"
+					/>
+				) : (
+					<img
+						src="https://azstatefair.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"
+						className="card-img-top profile"
+						alt="profile"
+					/>
+				)}
 				<div className="card-body">
 					<h5 className="title">{this.props.friend.title}</h5>
 					<p className="summary">{this.props.friend.summary}</p>
 					<button
-						type="button"
 						className="btn btn-danger delete-friend"
 						onClick={this.deleteFriend}
 					>

@@ -1,61 +1,134 @@
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 .btn {
-  margin: 0 5px;
+	margin: 0 5px;
 }
 
 main {
-  padding: 56px 0 20px 0;
-  min-height: calc(100vh - 142px);
+	padding: 56px 0 20px 0;
+	min-height: calc(100vh - 142px);
 }
 
 .title-container,
 .form-container {
-  max-width: 500px;
-  margin: 25px auto;
+	max-width: 500px;
+	margin: 25px auto;
 }
 
 .data-container {
-  max-width: 800px;
-  margin: 25px auto;
+	max-width: 1200px;
+	margin: 25px auto;
 }
 
 .row > * {
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 100%;
-  margin-top: 10px;
+	flex-shrink: 0;
+	width: 100%;
+	max-width: 100%;
+	margin-top: 10px;
 }
 
 h2 {
-  text-align: center;
-  margin-bottom: 20px;
+	text-align: center;
+	margin-bottom: 20px;
 }
 
-h4{
-  margin-bottom: 10px;
+h4 {
+	margin-bottom: 10px;
+}
+
+h5 {
+	font-weight: normal;
 }
 
 #my-form .btn {
-  margin: 10px 10px 0 0;
+	margin: 10px 10px 0 0;
 }
 
 .link-btn {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 .link-btn p {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .container-fluid .btn {
-  margin: 0 0 0 10px;
+	margin: 0 0 0 10px;
 }
 
 .card {
-  width: 18rem !important;
+	width: 280px !important;
+	margin: 10px;
+}
+
+.friends-buttons {
+	display: flex;
+	justify-content: space-between;
+}
+
+.friends-container {
+	display: flex;
+	border-top: 1px solid lightgrey;
+	padding-top: 15px;
+}
+
+#react-paginate {
+	margin: auto;
+	text-align: center;
+}
+
+#react-paginate ul {
+	display: inline-block;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#react-paginate li {
+	display: inline-block;
+	/* width: 30px; */
+	border: solid 1px darkgrey;
+	border-right: none;
+	/* background: green; */
+	color: darkgrey;
+}
+
+#react-paginate li :hover {
+	color: black;
+}
+
+#react-paginate li a {
+	height: 100%;
+	width: 100%;
+	padding: 5px 20px;
+	display: block;
+}
+
+#react-paginate :nth-last-child(2) {
+	border-right: solid 1px darkgrey;
+}
+
+#react-paginate .previous {
+	margin-right: 1rem;
+	width: auto;
+	border-right: solid 1px darkgrey;
+}
+
+#react-paginate .next {
+	width: auto;
+	margin-left: 1rem;
+	border-right: solid 1px darkgrey;
+}
+
+#react-paginate .active {
+	background: lightblue;
+	color: black;
+}
+
+#react-paginate .disabled :hover {
+	color: darkgrey;
+	cursor: default;
 }

@@ -6,7 +6,13 @@ import { toast } from "react-toastify";
 import friendsService from "../services/FriendsService";
 
 class EditFriend extends React.Component {
-	state = { formData: {} };
+	constructor(props) {
+		super(props);
+		this.state = {
+			friendId: this.props.match.params.friendId,
+			formData: {},
+		};
+	}
 
 	onFormFieldChanged = (e) => {
 		let input = e.currentTarget;
@@ -32,8 +38,17 @@ class EditFriend extends React.Component {
 	};
 
 	componentDidMount() {
-		console.log({ id: this.props.match.params.friendId });
+		console.log({ idFirst: this.props.match.params.friendId });
 		this.getFriend(this.props.match.params.friendId);
+	}
+
+	componentWillReceiveProps(props) {
+		// console.log({ friendId: this.state.friendId });
+		// console.log({ paramId: props.match.params.friendId });
+		if (this.state.friendId !== props.match.params.friendId) {
+			this.setState({ friendId: props.match.params.friendId });
+			this.getFriend(props.match.params.friendId);
+		}
 	}
 
 	getFriend = (id) => {
@@ -44,9 +59,15 @@ class EditFriend extends React.Component {
 	};
 
 	getFriendSuccess = (res) => {
-		console.log(res.data);
+		console.log({ friendData: res.data });
 		let friend = res.data.item;
+		if (friend.primaryImage === null) {
+			friend.primaryImage = {
+				imageUrl: "",
+			};
+		}
 		this.setState({
+			// friendId: friend.id,
 			formData: {
 				id: friend.id,
 				title: friend.title,
@@ -143,6 +164,37 @@ class EditFriend extends React.Component {
 							value={this.state.formData.headline}
 							onChange={this.onFormFieldChanged}
 						/>
+					</div>
+					<div className="col-12">
+						<label htmlFor="slug-input" className="form-label">
+							Slug
+						</label>
+						<input
+							name="slug"
+							type="text"
+							className="form-control"
+							id="slug-input"
+							value={this.state.formData.slug}
+							onChange={this.onFormFieldChanged}
+						/>
+					</div>
+					<div className="col-12">
+						<label htmlFor="slug-input" className="form-label">
+							Status
+						</label>
+						<select
+							className="form-control form-select"
+							aria-label="Select Status"
+							value={this.state.formData.status}
+							name="slug"
+							id="slug-input"
+							onChange={this.onFormFieldChanged}
+						>
+							<option value="NotSet">NotSet</option>
+							<option value="Active">Active</option>
+							<option value="Deleted">Deleted</option>
+							<option value="Flagged">Flagged</option>
+						</select>
 					</div>
 					<div className="col-12">
 						<label htmlFor="img-input" className="form-label">

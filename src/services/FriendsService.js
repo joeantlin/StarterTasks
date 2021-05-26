@@ -2,10 +2,10 @@ import axios from "axios";
 
 let endpoint = "https://api.remotebootcamp.dev/api/friends";
 
-export const getAll = () => {
+export const getAll = pageIndex => {
     const config = {
         method: "GET",
-        url: `${endpoint}?pageIndex=0&pageSize=10`,
+        url: `${endpoint}?pageIndex=${pageIndex}&pageSize=1`,
         crossdomain: true,
         headers: { "Content-Type": "application/json" }
     }
@@ -16,6 +16,16 @@ export const getById = id => {
     const config = {
         method: "GET",
         url: `${endpoint}/${id}`,
+        crossdomain: true,
+        headers: { "Content-Type": "application/json" }
+    }
+    return axios(config);
+}
+
+export const getBySearchQuery = (pageIndex, query) => {
+    const config = {
+        method: "GET",
+        url: `${endpoint}/search?pageIndex=${pageIndex}&pageSize=1&q=${query}`,
         crossdomain: true,
         headers: { "Content-Type": "application/json" }
     }
@@ -54,4 +64,4 @@ export const remove = id => {
     return axios(config);
 }
 
-export default { getAll, getById, add, update, remove };
+export default { getAll, getById, getBySearchQuery, add, update, remove };

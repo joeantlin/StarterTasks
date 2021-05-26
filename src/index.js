@@ -15,10 +15,10 @@ ReactDOM.render(
     <App></App>
     <ToastContainer
       position="top-center"
-      autoClose={5000}
+      autoClose={2500}
       hideProgressBar={false}
       newestOnTop={false}
-      closeOnClick={false}
+      closeOnClick={true}
       rtl={false}
       pauseOnFocusLoss={false}
       draggable={false}
