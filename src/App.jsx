@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Friends from "./components/Friends";
 import Widgets from "./components/Widgets";
 import Jobs from "./components/Jobs";
+import Cars from "./components/assessments/Cars";
 
 import usersService from "./services/UsersService";
 
@@ -109,6 +110,9 @@ class App extends Component {
 						</Route>
 						<Route exact path="/jobs">
 							<Jobs />
+						</Route>
+						<Route exact path="/cars">
+							<Cars />
 						</Route>
 					</Switch>
 				</main>

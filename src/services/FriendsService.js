@@ -5,7 +5,7 @@ let endpoint = "https://api.remotebootcamp.dev/api/friends";
 export const getAll = pageIndex => {
     const config = {
         method: "GET",
-        url: `${endpoint}?pageIndex=${pageIndex}&pageSize=1`,
+        url: `${endpoint}?pageIndex=${pageIndex}&pageSize=4`,
         crossdomain: true,
         headers: { "Content-Type": "application/json" }
     }
@@ -25,7 +25,7 @@ export const getById = id => {
 export const getBySearchQuery = (pageIndex, query) => {
     const config = {
         method: "GET",
-        url: `${endpoint}/search?pageIndex=${pageIndex}&pageSize=1&q=${query}`,
+        url: `${endpoint}/search?pageIndex=${pageIndex}&pageSize=4&q=${query}`,
         crossdomain: true,
         headers: { "Content-Type": "application/json" }
     }
@@ -61,7 +61,7 @@ export const remove = id => {
         crossdomain: true,
         headers: { "Content-Type": "application/json" }
     }
-    return axios(config);
+    return axios(config).then(() => id)
 }
 
 export default { getAll, getById, getBySearchQuery, add, update, remove };

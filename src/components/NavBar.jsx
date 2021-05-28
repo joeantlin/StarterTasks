@@ -81,6 +81,11 @@ class NavBar extends React.Component {
 									Widgets
 								</NavLink>
 							</li>
+							<li className="nav-item">
+								<NavLink className="nav-link" to="/cars">
+									Cars
+								</NavLink>
+							</li>
 						</ul>
 					</div>
 				</div>

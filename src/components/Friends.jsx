@@ -18,56 +18,48 @@ class Friends extends React.Component {
 		page: 0,
 		formData: {
 			query: "",
-			lastQuery: "",
 		},
 	};
 
-	componentDidMount = () => {
+	componentDidMount() {
 		this.getFriends();
-	};
+	}
 
 	getFriends = () => {
 		console.log(this.state.page);
 		friendsService
 			.getAll(this.state.page)
-			.then((res) => {
-				this.getFriendsSuccess(res, null);
-			})
+			.then(this.getFriendsSuccess)
 			.catch(this.getFriendsFail);
 	};
 
-	getFriendsSuccess = (res, query) => {
-		console.log(res.data);
-		console.log(res.data.item.pagedItems);
-		this.setState({
-			friends: res.data.item.pagedItems,
-			pageCount: res.data.item.totalPages,
+	getFriendsSuccess = (res) => {
+		let friends = res.data.item.pagedItems;
+
+		this.setState(() => {
+			return {
+				friends,
+				friendTemplates: friends.map(this.mapFriendTemplates),
+				pageCount: res.data.item.totalPages,
+			};
 		});
-		if (query) {
-			this.setState(() => {
-				let newState = { ...this.state.formData };
-				newState.lastQuery = newState.query;
-				return { formData: newState };
-			});
-		}
-		this.setFriendTemplates(res.data.item.pagedItems);
-		// renderAllFriends(res.data.item.pagedItems);
 	};
 
 	getFriendsFail = (res) => {
 		console.warn({ error: res });
 		if (res.response.status === 404) {
 			toast.error("No Friends Found!");
+			this.setState(() => {
+				return {
+					friends: [],
+					friendTemplates: [],
+					pageCount: 0,
+				};
+			});
 		} else {
 			toast.error("Could not get Friends!");
 		}
 	};
-
-	setFriendTemplates(friends) {
-		this.setState(() => {
-			return { friendTemplates: friends.map(this.mapFriendTemplates) };
-		});
-	}
 
 	mapFriendTemplates = (friend) => {
 		return (
@@ -81,11 +73,20 @@ class Friends extends React.Component {
 
 	onFormFieldChanged = (e) => {
 		let input = e.currentTarget;
-		this.setState(() => {
-			let newState = { ...this.state.formData };
-			newState[input.name] = input.value;
-			return { formData: newState };
-		});
+		this.setState(
+			() => {
+				let newState = { ...this.state.formData };
+				newState[input.name] = input.value;
+				return { formData: newState };
+			},
+			() => {
+				if (input.value === "") {
+					this.getFriends();
+				} else {
+					this.getFriendBySearch(input.value);
+				}
+			}
+		);
 	};
 
 	onFormSubmit = (e) => {
@@ -96,9 +97,7 @@ class Friends extends React.Component {
 	getFriendBySearch = (query) => {
 		friendsService
 			.getBySearchQuery(this.state.page, query)
-			.then((res) => {
-				this.getFriendsSuccess(res, query);
-			})
+			.then(this.getFriendsSuccess)
 			.catch(this.getFriendsFail);
 	};
 
@@ -111,31 +110,30 @@ class Friends extends React.Component {
 		// this.setState({ friends: newState });
 		// this.setFriendTemplates(newState);
 		this.clearSearch();
-		// this.getFriends();
 	};
 
 	deleteFriend = (friend) => {
 		friendsService
 			.remove(friend.id)
-			.then((res) => {
-				console.log(res.data);
-				this.removeFriend(friend);
-			})
+			.then(this.removeFriend)
 			.catch(this.deleteFriendFail);
 	};
 
 	deleteFriendFail = (res) => console.warn(res);
 
-	removeFriend = (deletedFriend) => {
+	removeFriend = (id) => {
 		let newState = this.state.friends;
 		newState.forEach((friend, i) => {
-			if (friend.id === deletedFriend.id) {
+			if (friend.id === id) {
 				newState.splice(i, 1);
 			}
 		});
+		// use indexOF
 
-		this.setState({ friends: newState });
-		this.setFriendTemplates(newState);
+		this.setState({
+			friends: newState,
+			friendTemplates: newState.map(this.mapFriendTemplates),
+		});
 	};
 
 	updateFriendState = (updatedFriend) => {
@@ -149,14 +147,17 @@ class Friends extends React.Component {
 			}
 		});
 
-		this.setState({ friends: newState });
-		this.setFriendTemplates(newState);
+		this.setState({
+			friends: newState,
+			friendTemplates: newState.map(this.mapFriendTemplates),
+		});
+		//// friends/123/edit
 	};
 
 	handlePageClick = (data) => {
 		this.setState({ page: data.selected }, () => {
 			if (this.state.formData.query !== "") {
-				this.getFriendBySearch(this.state.formData.lastQuery);
+				this.getFriendBySearch(this.state.formData.query);
 			} else {
 				this.getFriends();
 			}
@@ -169,7 +170,6 @@ class Friends extends React.Component {
 			() => {
 				let newState = { ...this.state.formData };
 				newState.query = "";
-				newState.lastQuery = "";
 				return { formData: newState };
 			},
 			() => {
@@ -210,7 +210,7 @@ class Friends extends React.Component {
 									>
 										Search
 									</button>
-									{this.state.formData.lastQuery !== "" && (
+									{this.state.formData.query !== "" && (
 										<button
 											className="btn btn-outline-danger"
 											type="button"
@@ -236,8 +236,8 @@ class Friends extends React.Component {
 					/>
 				</Switch>
 				<div className="data-container">
-					{this.state.formData.lastQuery !== "" && (
-						<h5>Search Results For : {this.state.formData.lastQuery}</h5>
+					{this.state.formData.query !== "" && (
+						<h5>Search Results For : {this.state.formData.query}</h5>
 					)}
 				</div>
 
