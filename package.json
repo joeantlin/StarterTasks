@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "formik": "^2.2.9",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "rc-pagination": "^3.0.4",
@@ -17,7 +18,8 @@
     "reactstrap": "^8.6.0",
     "sabio-debug": "https://github.com/sabiocode/debug",
     "sweetalert2": "^10.3.5",
-    "sweetalert2-react-content": "^3.2.0"
+    "sweetalert2-react-content": "^3.2.0",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -132,3 +132,10 @@ h5 {
 	color: darkgrey;
 	cursor: default;
 }
+
+.has-error {
+	width: 100%;
+	margin-top: 0.25rem;
+	font-size: 14px;
+	color: #dc3545;
+}
