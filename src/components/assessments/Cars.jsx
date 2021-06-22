@@ -79,7 +79,7 @@ class Cars extends React.Component {
 	};
 
 	filterCars = (car) => {
-		return car.year == this.state.carYear;
+		return car.year === this.state.carYear;
 	};
 
 	onFormFieldChanged = (e) => {

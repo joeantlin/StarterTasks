@@ -96,7 +96,7 @@ class Friends extends React.Component {
 
 	getFriendBySearch = (query) => {
 		friendsService
-			.getBySearchQuery(this.state.page, query)
+			.getBySearchQuery(query, this.state.page)
 			.then(this.getFriendsSuccess)
 			.catch(this.getFriendsFail);
 	};

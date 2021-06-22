@@ -17,7 +17,7 @@ class App extends Component {
 	state = {};
 
 	getUser = () => {
-		usersService.getCurrent().then(this.getUserSuccess).catch(this.getUserFail);
+		// usersService.getCurrent().then(this.getUserSuccess).catch(this.getUserFail);
 	};
 
 	getUserSuccess = (res) => {
